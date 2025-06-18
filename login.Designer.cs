@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(login));
             label_login_login = new Label();
             textBox_name = new TextBox();
             textBox_password = new TextBox();
@@ -37,6 +38,7 @@
             label_login_registr = new Label();
             label_login_error1 = new Label();
             label_login_error2 = new Label();
+            checkBox_save_data = new CheckBox();
             SuspendLayout();
             // 
             // label_login_login
@@ -62,6 +64,7 @@
             textBox_password.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 204);
             textBox_password.Location = new Point(200, 219);
             textBox_password.Name = "textBox_password";
+            textBox_password.PasswordChar = '*';
             textBox_password.Size = new Size(173, 39);
             textBox_password.TabIndex = 2;
             // 
@@ -130,11 +133,22 @@
             label_login_error2.Text = "error2";
             label_login_error2.Visible = false;
             // 
+            // checkBox_save_data
+            // 
+            checkBox_save_data.AutoSize = true;
+            checkBox_save_data.Location = new Point(200, 341);
+            checkBox_save_data.Name = "checkBox_save_data";
+            checkBox_save_data.Size = new Size(155, 19);
+            checkBox_save_data.TabIndex = 9;
+            checkBox_save_data.Text = "зберегти дані для входу";
+            checkBox_save_data.UseVisualStyleBackColor = true;
+            // 
             // login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 461);
+            Controls.Add(checkBox_save_data);
             Controls.Add(label_login_error2);
             Controls.Add(label_login_error1);
             Controls.Add(label_login_registr);
@@ -145,7 +159,9 @@
             Controls.Add(textBox_name);
             Controls.Add(label_login_login);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "login";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Вхід";
             Load += login_Load;
             ResumeLayout(false);
@@ -163,5 +179,6 @@
         private Label label_login_registr;
         private Label label_login_error1;
         private Label label_login_error2;
+        private CheckBox checkBox_save_data;
     }
 }

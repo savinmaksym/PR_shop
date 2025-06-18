@@ -1,33 +1,51 @@
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PR_shop;
 
 namespace PR_shop
 {
     public partial class login : Form
     {
-        //3 години система авторизації
+        //почав в 8 закінчив в
         public login()
         {
             InitializeComponent();
+           
         }
         private void login_Load(object sender, EventArgs e)
         {
+           auto_login();
            
         }
        
+       
+        private void auto_login()
+        {
+            string filePath = "login_data.txt";
+            if (File.Exists(filePath))
+            {
+                string[] lines = File.ReadAllLines(filePath);
+                if (lines.Length >= 2)
+                {
+                    textBox_name.Text = lines[0];
+                    textBox_password.Text = lines[1];
+                    check_login_data(true);
+                }
+            }
+        }
 
 
-
-        private async Task check_login_data()
+        private async Task check_login_data(bool autologin)
         {
             label_login_error1.Visible = false;
             label_login_error2.Visible = false;
-
-            if (!check_textBoxes())
+            if (autologin) goto Skip;
+            if (!func.check_textBoxes(label_login_error1, label_login_error2, textBox_name, textBox_password))
             {
                 return;
             }
+            Skip:
             string username = textBox_name.Text.ToLower();
             string password = textBox_password.Text;
             string url = $"https://firestore.googleapis.com/v1/projects/pr-shop-20470/databases/(default)/documents/users/{username}";
@@ -49,10 +67,12 @@ namespace PR_shop
                 string storedHash = userDoc["fields"]?["password"]?["stringValue"]?.ToString();
                 if (string.IsNullOrEmpty(storedHash)) return;
 
-                if(BCrypt.Net.BCrypt.Verify(password, storedHash))
+                if(BCrypt.Net.BCrypt.Verify(password, storedHash) || (autologin && password == storedHash))
                 {
-                    // Пароль вірний, користувач може увійти
-                    go_to_shop();
+                    // Пароль вірний, користувач може увійт
+                    if(checkBox_save_data.Checked && !autologin) func.save_login_data(username, storedHash);
+                    func.go_to_shop(textBox_name, this);
+                    
                 }else
                 {
                     // Пароль невірний
@@ -67,59 +87,6 @@ namespace PR_shop
         
 
 
-        private bool check_textBoxes()
-        {
-            if (string.IsNullOrWhiteSpace(textBox_name.Text))
-            {
-                label_login_error1.Text = "Будь ласка введіть своє ім'я.";
-                label_login_error1.Visible = true;
-                return false;
-            }
-            else if (textBox_name.Text.Length < 3 || textBox_name.Text.Length > 20)
-            {
-                label_login_error1.Text = "Ім'я повинно бути від 3 до 20 символів.";
-                label_login_error1.Visible = true;
-                return false;
-            }
-            else if (!textBox_name.Text.All(char.IsLetterOrDigit))
-            {
-                label_login_error1.Text = "Ім'я повинно містити тільки букви і цифри на англ.";
-                label_login_error1.Visible = true;
-                return false;
-            }
-            else
-            {
-                label_login_error1.Visible = false;
-            }
-
-
-
-            if (string.IsNullOrWhiteSpace(textBox_password.Text))
-            {
-                label_login_error2.Text = "Будь ласка введіть свій пароль.";
-                label_login_error2.Visible = true;
-                return false;
-            }
-            else if (textBox_password.Text.Length < 4 || textBox_password.Text.Length > 10)
-            {
-                label_login_error2.Text = "Пароль повинен бути від 4 до 10 символів.";
-                label_login_error2.Visible = true;
-                return false;
-            }
-            else if (!textBox_password.Text.All(char.IsLetterOrDigit))
-            {
-                label_login_error2.Text = "Пароль повинен містити тільки букви і цифри на англ.";
-                label_login_error2.Visible = true;
-                return false;
-            }
-            else
-            {
-                label_login_error2.Visible = false;
-            }
-
-            return true;
-        }
-
         private void go_to_registr()
         {
             registr regForm = new registr();
@@ -128,13 +95,7 @@ namespace PR_shop
             regForm.Show(); 
         }
 
-        private void go_to_shop()
-        {
-            shop shopForm = new shop();
-            this.Hide();
-            shopForm.FormClosed += (s, args) => this.Close(); 
-            shopForm.Show();
-        }
+       
 
        
 
@@ -145,7 +106,7 @@ namespace PR_shop
 
         private void button_login_login_Click(object sender, EventArgs e)
         {
-            check_login_data();
+            check_login_data(false);
         }
 
     }

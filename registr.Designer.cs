@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(registr));
             label_registr_login = new Label();
             button_registr_registr = new Button();
             label_registr_password = new Label();
@@ -37,6 +38,7 @@
             label_registr_registr = new Label();
             label_registr_error2 = new Label();
             label_registr_error1 = new Label();
+            checkBox_save_data = new CheckBox();
             SuspendLayout();
             // 
             // label_registr_login
@@ -87,6 +89,7 @@
             textBox_password.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 204);
             textBox_password.Location = new Point(206, 217);
             textBox_password.Name = "textBox_password";
+            textBox_password.PasswordChar = '*';
             textBox_password.Size = new Size(173, 39);
             textBox_password.TabIndex = 9;
             // 
@@ -130,11 +133,22 @@
             label_registr_error1.Text = "error1";
             label_registr_error1.Visible = false;
             // 
+            // checkBox_save_data
+            // 
+            checkBox_save_data.AutoSize = true;
+            checkBox_save_data.Location = new Point(206, 338);
+            checkBox_save_data.Name = "checkBox_save_data";
+            checkBox_save_data.Size = new Size(155, 19);
+            checkBox_save_data.TabIndex = 16;
+            checkBox_save_data.Text = "зберегти дані для входу";
+            checkBox_save_data.UseVisualStyleBackColor = true;
+            // 
             // registr
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 461);
+            Controls.Add(checkBox_save_data);
             Controls.Add(label_registr_error2);
             Controls.Add(label_registr_error1);
             Controls.Add(label_registr_login);
@@ -145,7 +159,9 @@
             Controls.Add(textBox_name);
             Controls.Add(label_registr_registr);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "registr";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Зареєструватись";
             Load += registr_Load;
             ResumeLayout(false);
@@ -163,5 +179,6 @@
         private Label label_registr_registr;
         private Label label_registr_error2;
         private Label label_registr_error1;
+        private CheckBox checkBox_save_data;
     }
 }

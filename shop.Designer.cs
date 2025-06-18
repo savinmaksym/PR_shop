@@ -28,12 +28,94 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "shop";
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(shop));
+            flowLayoutPanel = new FlowLayoutPanel();
+            label_shop_username = new Label();
+            pictureBox1 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            label_shop_name = new Label();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            SuspendLayout();
+            // 
+            // flowLayoutPanel
+            // 
+            flowLayoutPanel.AutoScroll = true;
+            flowLayoutPanel.Location = new Point(140, 0);
+            flowLayoutPanel.Name = "flowLayoutPanel";
+            flowLayoutPanel.Size = new Size(443, 411);
+            flowLayoutPanel.TabIndex = 0;
+            // 
+            // label_shop_username
+            // 
+            label_shop_username.AutoSize = true;
+            label_shop_username.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            label_shop_username.Location = new Point(647, 23);
+            label_shop_username.Name = "label_shop_username";
+            label_shop_username.Size = new Size(81, 21);
+            label_shop_username.TabIndex = 1;
+            label_shop_username.Text = "username";
+            label_shop_username.TextAlign = ContentAlignment.TopRight;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.exit;
+            pictureBox1.Location = new Point(734, 9);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(35, 35);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 2;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = Properties.Resources.cart;
+            pictureBox2.Location = new Point(589, 4);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(40, 40);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.TabIndex = 3;
+            pictureBox2.TabStop = false;
+            // 
+            // label_shop_name
+            // 
+            label_shop_name.AutoSize = true;
+            label_shop_name.Font = new Font("Showcard Gothic", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_shop_name.Location = new Point(3, 4);
+            label_shop_name.Name = "label_shop_name";
+            label_shop_name.Size = new Size(126, 27);
+            label_shop_name.TabIndex = 4;
+            label_shop_name.Text = "Говно Шоп";
+            // 
+            // shop
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(784, 411);
+            Controls.Add(label_shop_name);
+            Controls.Add(pictureBox2);
+            Controls.Add(pictureBox1);
+            Controls.Add(label_shop_username);
+            Controls.Add(flowLayoutPanel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Name = "shop";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Магазин";
+            Load += shop_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private FlowLayoutPanel flowLayoutPanel;
+        private Label label_shop_username;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox2;
+        private Label label_shop_name;
     }
 }
