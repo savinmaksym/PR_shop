@@ -31,10 +31,12 @@
             flowLayoutPanel = new FlowLayoutPanel();
             button1 = new Button();
             button2 = new Button();
+            label_total_price = new Label();
             SuspendLayout();
             // 
             // flowLayoutPanel
             // 
+            flowLayoutPanel.AutoScroll = true;
             flowLayoutPanel.Location = new Point(0, 1);
             flowLayoutPanel.Name = "flowLayoutPanel";
             flowLayoutPanel.Size = new Size(353, 335);
@@ -64,11 +66,22 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // label_total_price
+            // 
+            label_total_price.AutoSize = true;
+            label_total_price.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            label_total_price.Location = new Point(355, 255);
+            label_total_price.Name = "label_total_price";
+            label_total_price.Size = new Size(17, 20);
+            label_total_price.TabIndex = 4;
+            label_total_price.Text = "0";
+            // 
             // cart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(533, 337);
+            Controls.Add(label_total_price);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(flowLayoutPanel);
@@ -77,6 +90,7 @@
             Text = "кошик";
             Load += cart_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -84,5 +98,6 @@
         private FlowLayoutPanel flowLayoutPanel;
         private Button button1;
         private Button button2;
+        private Label label_total_price;
     }
 }

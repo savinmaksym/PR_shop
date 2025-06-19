@@ -51,7 +51,7 @@ namespace PR_shop
             string userJson = await userResponse.Content.ReadAsStringAsync();
             var userDoc = JsonConvert.DeserializeObject<FirestoreDocument>(userJson);
 
-           
+
             var cart = new List<string>();
 
             if (userDoc.fields != null && userDoc.fields.ContainsKey("cart"))
@@ -104,6 +104,7 @@ namespace PR_shop
 
                 flowLayoutPanel.Controls.Add(CreateCartItemCard(item));
             }
+            calculate_total_price(); // перераховуємо загальну ціну
         }
         private Control CreateCartItemCard(CartItem item)
         {
@@ -252,6 +253,7 @@ namespace PR_shop
                 if (shop.Instance != null && !shop.Instance.IsDisposed)
                 {
                     shop.Instance.LoadProducts(); // оновлюємо магазин
+                    calculate_total_price(); // перераховуємо загальну ціну
                 }
             }
             else
@@ -330,6 +332,7 @@ namespace PR_shop
             {
                 flowLayoutPanel.Controls.Clear();
                 LoadCartFromFirestore(username);
+                calculate_total_price(); // перераховуємо загальну ціну
 
                 if (shop.Instance != null && !shop.Instance.IsDisposed)
                 {
@@ -341,6 +344,24 @@ namespace PR_shop
                 string error = await patchResponse.Content.ReadAsStringAsync();
                 MessageBox.Show($"Помилка при оновленні корзини:\n{patchResponse.StatusCode}\n{error}");
             }
+
+        }
+
+        void calculate_total_price()
+        {
+            decimal total = 0;
+            foreach (Control control in flowLayoutPanel.Controls)
+            {
+                if (control is Panel panel)
+                {
+                    var priceLabel = panel.Controls.OfType<Label>().FirstOrDefault(l => l.Text.StartsWith("Ціна:"));
+                    if (priceLabel != null && decimal.TryParse(priceLabel.Text.Replace("Ціна: ", "").Replace(" грн", ""), out decimal price))
+                    {
+                        total += price;
+                    }
+                }
+            }
+            label_total_price.Text = $"Загальна сума: {total} грн";
         }
 
 

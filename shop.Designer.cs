@@ -44,7 +44,7 @@
             flowLayoutPanel.AutoScroll = true;
             flowLayoutPanel.Location = new Point(140, 0);
             flowLayoutPanel.Name = "flowLayoutPanel";
-            flowLayoutPanel.Size = new Size(510, 411);
+            flowLayoutPanel.Size = new Size(530, 411);
             flowLayoutPanel.TabIndex = 0;
             // 
             // label_shop_username
@@ -72,7 +72,7 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.cart;
-            pictureBox2.Location = new Point(647, 1);
+            pictureBox2.Location = new Point(670, 0);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(45, 45);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
