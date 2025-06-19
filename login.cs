@@ -16,7 +16,6 @@ namespace PR_shop
         private void login_Load(object sender, EventArgs e)
         {
            auto_login();
-           
         }
        
        
@@ -66,12 +65,22 @@ namespace PR_shop
 
                 string storedHash = userDoc["fields"]?["password"]?["stringValue"]?.ToString();
                 if (string.IsNullOrEmpty(storedHash)) return;
+               
+              
+                int perm = userDoc["fields"]?["permissionLevel"]?["integerValue"]?.Value<int>() ?? 0;
+                if (perm == 0)
+                {
+                    MessageBox.Show("Ваш акаунт заблоковано. Зверніться до адміністрації магазину.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+               
 
-                if(BCrypt.Net.BCrypt.Verify(password, storedHash) || (autologin && password == storedHash))
+                if (BCrypt.Net.BCrypt.Verify(password, storedHash) || (autologin && password == storedHash))
                 {
                     // Пароль вірний, користувач може увійт
-                    if(checkBox_save_data.Checked && !autologin) func.save_login_data(username, storedHash);
-                    func.go_to_shop(textBox_name, this);
+                    
+                    if (checkBox_save_data.Checked && !autologin) func.save_login_data(username, storedHash);
+                    func.go_to_shop(textBox_name, this, perm);
                     
                 }else
                 {

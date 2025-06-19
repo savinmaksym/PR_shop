@@ -21,10 +21,10 @@ namespace PR_shop
 
 
 
-        public static void go_to_shop(TextBox textBox_name, Form e)
+        public static void go_to_shop(TextBox textBox_name, Form e, int perm)
         {
             string username = textBox_name.Text.ToLower();
-            shop shopForm = new shop(username);
+            shop shopForm = new shop(username,perm);
             e.Hide();
             shopForm.ShowDialog();
         }

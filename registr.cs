@@ -15,7 +15,7 @@ namespace PR_shop
 {
     public partial class registr : Form
     {
-       
+       int default_permission = 1; // 1 - user, 2 - admin (0-banned)
         public registr()
         {
             InitializeComponent();
@@ -63,13 +63,13 @@ namespace PR_shop
         {{
         ""fields"": {{
         ""password"": {{ ""stringValue"": ""{passwordHash}"" }},
-        ""permissionLevel"": {{ ""integerValue"": ""1"" }}
+        ""permissionLevel"": {{ ""integerValue"": ""{default_permission}"" }}
         }}
         }}";
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             await client.PostAsync(url, content);
             if (checkBox_save_data.Checked) func.save_login_data(username, passwordHash);
-            func.go_to_shop(textBox_name, this);
+            func.go_to_shop(textBox_name, this, default_permission);
         }
      
        
