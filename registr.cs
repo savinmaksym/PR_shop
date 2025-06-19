@@ -63,7 +63,8 @@ namespace PR_shop
         {{
         ""fields"": {{
         ""password"": {{ ""stringValue"": ""{passwordHash}"" }},
-        ""permissionLevel"": {{ ""integerValue"": ""{default_permission}"" }}
+        ""permissionLevel"": {{ ""integerValue"": ""{default_permission}"" }},
+        ""cart"": {{ ""arrayValue"": {{ ""values"": [] }} }}
         }}
         }}";
             var content = new StringContent(json, Encoding.UTF8, "application/json");

@@ -138,6 +138,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "panel_add_items";
             Text = "panel_add_items";
+            Load += panel_add_items_Load;
             ResumeLayout(false);
             PerformLayout();
         }

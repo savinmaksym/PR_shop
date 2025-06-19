@@ -8,16 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 
 namespace PR_shop
 {
     public partial class shop : Form
     {
         int permission; // 1 - user, 2 - admin
+        string username; 
         public static shop Instance;
-        public shop(string username, int status)
+        public shop(string usern, int status)
         {
-            permission = status; 
+            username = usern.ToLower();
+            permission = status;
             InitializeComponent();
             Instance = this;
             label_shop_username.Text = username;
@@ -25,7 +28,7 @@ namespace PR_shop
         private void shop_Load(object sender, EventArgs e)
         {
             LoadProducts();
-            if(permission == 2)
+            if (permission == 2)
             {
                 label_admin_panel.Visible = true;
             }
@@ -34,13 +37,14 @@ namespace PR_shop
                 label_admin_panel.Visible = false;
             }
         }
-        // Додайте властивість Amount до класу Product:
+        
         public class Product
         {
             public string Name { get; set; }
             public decimal Price { get; set; }
             public string ImageUrl { get; set; }
             public int Amount { get; set; }
+            public string Id { get; set; } // айди документа товару
         }
         public class FirestoreResponse
         {
@@ -49,6 +53,7 @@ namespace PR_shop
 
         public class FirestoreDocument
         {
+            public string name { get; set; } // назва документа
             public Dictionary<string, FirestoreField> fields { get; set; }
         }
 
@@ -57,16 +62,150 @@ namespace PR_shop
             public string stringValue { get; set; }
             public double? doubleValue { get; set; }
             public string integerValue { get; set; }
+            public List<FirestoreField> values { get; set; }
+            public FirestoreArray arrayValue { get; set; }
+        }
+        public class FirestoreArray
+        {
+            public List<FirestoreField> values { get; set; }
+        }
+
+
+        private async void add_to_cart(string productId, string username)
+        {
+            string projectId = "pr-shop-20470";
+            string url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/users/{username}";
+
+            using (var httpClient = new HttpClient())
+            {
+               
+                var getResponse = await httpClient.GetAsync(url);
+                if (!getResponse.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Не вдалося отримати документ.");
+                    return;
+                }
+
+                var json = await getResponse.Content.ReadAsStringAsync();
+                var document = JsonConvert.DeserializeObject<FirestoreDocument>(json);
+
+                List<string> cart = new List<string>();
+                if (document.fields != null && document.fields.ContainsKey("cart"))
+                {
+                    var items = document.fields["cart"].arrayValue?.values;
+                    if (items != null)
+                    {
+                        foreach (var item in items)
+                        {
+                            if (!string.IsNullOrEmpty(item.stringValue))
+                                cart.Add(item.stringValue);
+                        }
+                    }
+                }
+
+               
+                if (!cart.Contains(productId))
+                    cart.Add(productId);
+
+                
+                JObject body = new JObject
+                {
+                    ["fields"] = new JObject
+                    {
+                        ["cart"] = new JObject
+                        {
+                            ["arrayValue"] = new JObject
+                            {
+                                ["values"] = new JArray(
+                                    cart.Select(id =>
+                                        new JObject
+                                        {
+                                            ["stringValue"] = id
+                                        }
+                                    )
+                                )
+                            }
+                        }
+                    }
+                };
+
+                if (document.fields.ContainsKey("password") && document.fields["password"]?.stringValue != null)
+                {
+                    body["fields"]["password"] = new JObject
+                    {
+                        ["stringValue"] = document.fields["password"].stringValue
+                    };
+                }
+
+                if (document.fields.ContainsKey("permissionLevel") && document.fields["permissionLevel"]?.integerValue != null)
+                {
+                    body["fields"]["permissionLevel"] = new JObject
+                    {
+                        ["integerValue"] = document.fields["permissionLevel"].integerValue
+                    };
+                }
+
+               
+                var content = new StringContent(body.ToString(), Encoding.UTF8, "application/json");
+                var patchResponse = await httpClient.PatchAsync(url, content);
+
+                if (!patchResponse.IsSuccessStatusCode)
+                {
+                    string error = await patchResponse.Content.ReadAsStringAsync();
+                    MessageBox.Show($"❌ Помилка оновлення:\n{patchResponse.StatusCode}\n{error}");
+                }
+                else
+                {
+                    //MessageBox.Show("Додано до корзини.");
+                }
+            }
+        }
+
+
+        private async Task<bool> IsProductInCart(string productId, string username)
+        {
+            //string projectId = "pr-shop-20470"; 
+            string url = $"https://firestore.googleapis.com/v1/projects/pr-shop-20470/databases/(default)/documents/users/{username}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show($"Не вдалося отримати дані користувача: {response.StatusCode}");
+                    return false;
+                }
+
+                string json = await response.Content.ReadAsStringAsync();
+                var document = JsonConvert.DeserializeObject<FirestoreDocument>(json);
+
+                if (document.fields != null && document.fields.ContainsKey("cart"))
+                {
+                    var cartValues = document.fields["cart"].arrayValue?.values;
+                    if (cartValues != null)
+                    {
+                        foreach (var item in cartValues)
+                        {
+                            if (item.stringValue == productId)
+                                return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
 
 
-        private Panel CreateProductCard(Product product)
+
+
+        private async Task<Panel> CreateProductCard(Product product)
         {
             var panel = new Panel
             {
                 Width = 150,
-                Height = 260,
+                Height = 230,
                 BorderStyle = BorderStyle.FixedSingle,
                 Margin = new Padding(10)
             };
@@ -88,7 +227,7 @@ namespace PR_shop
                 Text = product.Name,
                 AutoSize = false,
                 Width = 130,
-                Height = 40,
+                Height = 20,
                 Top = 120,
                 Left = 10,
                 TextAlign = ContentAlignment.TopCenter
@@ -100,7 +239,7 @@ namespace PR_shop
                 Text = product.Price.ToString("C"),
                 AutoSize = false,
                 Width = 130,
-                Top = 170,
+                Top = 150,
                 Left = 10,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font = new Font("Arial", 10, FontStyle.Bold)
@@ -113,25 +252,32 @@ namespace PR_shop
                 AutoSize = false,
                 Width = 130,
                 Height = 20,
-                Top = 195,
+                Top = 175,
                 Left = 10,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font = new Font("Arial", 9, FontStyle.Regular)
             };
 
+
             // Кнопка "Додати в корзину"
+            bool check = await IsProductInCart(product.Id, username);
             Button addToCartButton = new Button
             {
-                Text = "Додати в корзину",
+               
+                Enabled = product.Amount > 0 && !check,
+                Text = check ? "Вже в корзині" : (product.Amount > 0 ? "Додати в корзину" : "Немає в наявності"),
+
                 Width = 130,
                 Height = 25,
-                Top = 220,
+                Top = 195,
                 Left = 10
             };
+            
             addToCartButton.Click += (s, e) =>
             {
-                // TODO: Додати логіку додавання в корзину
-                MessageBox.Show($"Товар \"{product.Name}\" додано в корзину!");
+                add_to_cart(product.Id, username);
+                LoadProducts(); // Оновлюємо список товарів після додавання
+                //MessageBox.Show($"Товар \"{product.Name}\" додано в корзину!");
             };
 
             panel.Controls.Add(picture);
@@ -177,12 +323,15 @@ namespace PR_shop
                 if (doc.fields["amount"]?.integerValue != null)
                     amount = int.Parse(doc.fields["amount"].integerValue);
 
+                string id = doc.name.Split('/').Last(); // Отримуємо ID документа
+
                 products.Add(new Product
                 {
                     Name = name,
                     Price = price,
                     ImageUrl = imageUrl,
-                    Amount = amount
+                    Amount = amount,
+                    Id = id
                 });
             }
 
@@ -190,19 +339,15 @@ namespace PR_shop
             flowLayoutPanel.Controls.Clear();
             foreach (var product in products)
             {
-                flowLayoutPanel.Controls.Add(CreateProductCard(product));
+                flowLayoutPanel.Controls.Add(await CreateProductCard(product));
             }
         }
-
-
 
         private void go_to_admin_panel()
         {
             admin_panel adminPanel = new admin_panel();
             adminPanel.ShowDialog();
         }
-
-
 
         private void exit_to_login()
         {
@@ -217,6 +362,13 @@ namespace PR_shop
             this.Close();
         }
 
+        private void go_to_cart()
+        {
+            cart cartForm = new cart(username);
+            cartForm.ShowDialog();
+        }
+
+
 
 
 
@@ -230,6 +382,11 @@ namespace PR_shop
         private void label1_Click(object sender, EventArgs e)
         {
             go_to_admin_panel();
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            go_to_cart();
         }
     }
 }

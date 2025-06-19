@@ -31,7 +31,7 @@ namespace PR_shop
                 MessageBox.Show("Ціна вказана неправильно.");
                 return;
             }
-           
+
             if (!int.TryParse(textBox_amount.Text, out itemAmount))
             {
                 MessageBox.Show("кількість вказана неправильно.");
@@ -51,8 +51,8 @@ namespace PR_shop
 
             string json = JsonConvert.SerializeObject(requestBody);
 
-           
-            string projectId = "pr-shop-20470"; 
+
+            string projectId = "pr-shop-20470";
             string url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/items";
 
             using (HttpClient client = new HttpClient())
@@ -85,6 +85,11 @@ namespace PR_shop
         private void button1_Click(object sender, EventArgs e)
         {
             add_item_to_database();
+        }
+
+        private void panel_add_items_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
