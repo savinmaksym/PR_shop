@@ -50,7 +50,7 @@
             button1.ForeColor = SystemColors.ButtonHighlight;
             button1.Location = new Point(359, 278);
             button1.Name = "button1";
-            button1.Size = new Size(158, 47);
+            button1.Size = new Size(187, 47);
             button1.TabIndex = 1;
             button1.Text = "Замовити";
             button1.UseVisualStyleBackColor = false;
@@ -60,7 +60,7 @@
             button2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             button2.Location = new Point(359, 1);
             button2.Name = "button2";
-            button2.Size = new Size(158, 34);
+            button2.Size = new Size(187, 34);
             button2.TabIndex = 2;
             button2.Text = "Очистити";
             button2.UseVisualStyleBackColor = true;
@@ -72,15 +72,14 @@
             label_total_price.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             label_total_price.Location = new Point(355, 255);
             label_total_price.Name = "label_total_price";
-            label_total_price.Size = new Size(17, 20);
+            label_total_price.Size = new Size(0, 20);
             label_total_price.TabIndex = 4;
-            label_total_price.Text = "0";
             // 
             // cart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(533, 337);
+            ClientSize = new Size(558, 337);
             Controls.Add(label_total_price);
             Controls.Add(button2);
             Controls.Add(button1);

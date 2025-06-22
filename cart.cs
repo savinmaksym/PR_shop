@@ -19,6 +19,7 @@ namespace PR_shop
         {
             username = usern.ToLower();
             InitializeComponent();
+            label_total_price.Text = "Загальна сума: 0 грн"; 
         }
 
         private void cart_Load(object sender, EventArgs e)
@@ -151,6 +152,10 @@ namespace PR_shop
                 Minimum = 1,
                 Maximum = 100,
                 Value = 1
+            };
+            quantitySelector.ValueChanged += (s, e) =>
+            {
+                calculate_total_price();
             };
 
             var buttonDel = new Button
@@ -355,9 +360,11 @@ namespace PR_shop
                 if (control is Panel panel)
                 {
                     var priceLabel = panel.Controls.OfType<Label>().FirstOrDefault(l => l.Text.StartsWith("Ціна:"));
+                    var count = panel.Controls.OfType<NumericUpDown>().FirstOrDefault()?.Value ?? 1;
+                    
                     if (priceLabel != null && decimal.TryParse(priceLabel.Text.Replace("Ціна: ", "").Replace(" грн", ""), out decimal price))
                     {
-                        total += price;
+                        total += price*count;
                     }
                 }
             }

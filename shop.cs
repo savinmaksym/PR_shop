@@ -205,7 +205,7 @@ namespace PR_shop
             var panel = new Panel
             {
                 Width = 150,
-                Height = 230,
+                Height = 235,
                 BorderStyle = BorderStyle.FixedSingle,
                 Margin = new Padding(10)
             };
@@ -215,7 +215,7 @@ namespace PR_shop
             {
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Width = 130,
-                Height = 100,
+                Height = 130,
                 ImageLocation = product.ImageUrl,
                 Top = 10,
                 Left = 10
@@ -228,9 +228,10 @@ namespace PR_shop
                 AutoSize = false,
                 Width = 130,
                 Height = 20,
-                Top = 120,
+                Top = 145,
                 Left = 10,
-                TextAlign = ContentAlignment.TopCenter
+                TextAlign = ContentAlignment.TopCenter,
+                 Font = new Font("Arial", 10, FontStyle.Bold)
             };
 
             // Ціна
@@ -239,10 +240,10 @@ namespace PR_shop
                 Text = product.Price.ToString("C"),
                 AutoSize = false,
                 Width = 130,
-                Top = 150,
+                Top = 160,
                 Left = 10,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Arial", 10, FontStyle.Bold)
+                Font = new Font("Arial", 9, FontStyle.Bold)
             };
 
             // Кількість (amount)
@@ -252,7 +253,7 @@ namespace PR_shop
                 AutoSize = false,
                 Width = 130,
                 Height = 20,
-                Top = 175,
+                Top = 179,
                 Left = 10,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font = new Font("Arial", 9, FontStyle.Regular)
@@ -269,7 +270,7 @@ namespace PR_shop
 
                 Width = 130,
                 Height = 25,
-                Top = 195,
+                Top = 200,
                 Left = 10
             };
             

@@ -20,10 +20,21 @@ namespace PR_shop
 
 
 
+
+
+
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             panel_add_items panel_Add_Items = new panel_add_items();
             panel_Add_Items.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            panel_edit_items panel_Edit_Items = new panel_edit_items();
+            panel_Edit_Items.ShowDialog();
         }
     }
 }
