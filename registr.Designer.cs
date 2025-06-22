@@ -147,6 +147,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.InactiveCaption;
             ClientSize = new Size(584, 461);
             Controls.Add(checkBox_save_data);
             Controls.Add(label_registr_error2);

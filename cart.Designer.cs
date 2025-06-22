@@ -79,6 +79,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.InactiveCaption;
             ClientSize = new Size(558, 337);
             Controls.Add(label_total_price);
             Controls.Add(button2);

@@ -52,7 +52,7 @@
             button_delet.TabIndex = 1;
             button_delet.Text = "видалити";
             button_delet.UseVisualStyleBackColor = true;
-            button_delet.Click += this.button_delet_Click;
+            button_delet.Click += button_delet_Click;
             // 
             // button_search
             // 
@@ -168,6 +168,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.InactiveCaption;
             ClientSize = new Size(487, 322);
             Controls.Add(label4);
             Controls.Add(label3);
