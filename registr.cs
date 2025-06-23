@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Xml.Linq;
 using PR_shop;
+using static PR_shop.shop;
 
 namespace PR_shop
 {
@@ -77,6 +78,11 @@ namespace PR_shop
 
         private void go_to_login()
         {
+            string filePath = "login_data.txt";
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
             login logForm = new login();
             this.Hide(); 
             logForm.FormClosed += (s, args) => this.Close();
@@ -95,6 +101,7 @@ namespace PR_shop
         private void label_registr_login_Click(object sender, EventArgs e)
         {
            go_to_login();
+
         }
         private void button_registr_registr_Click(object sender, EventArgs e)
         {

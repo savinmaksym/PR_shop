@@ -350,7 +350,7 @@ namespace PR_shop
             adminPanel.ShowDialog();
         }
 
-        private void exit_to_login()
+        public void exit_to_login()
         {
             string filePath = "login_data.txt";
             if (System.IO.File.Exists(filePath))
