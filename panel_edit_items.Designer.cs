@@ -186,6 +186,7 @@
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "panel_edit_items";
             Text = "panel_delet_items";
+            Load += panel_edit_items_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();

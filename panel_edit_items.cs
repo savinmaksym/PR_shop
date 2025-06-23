@@ -46,7 +46,7 @@ namespace PR_shop
             foreach (var doc in firestoreResponse.documents)
             {
                 string name = doc.fields["name"]?.stringValue ?? "???";
-                string docId = doc.name.Split('/').Last(); 
+                string docId = doc.name.Split('/').Last();
                 comboBox_name.Items.Add(new ComboBoxItem { Name = name, DocumentId = docId });
             }
         }
@@ -91,7 +91,9 @@ namespace PR_shop
                     ["name"] = new { stringValue = textBox_name.Text },
                     ["price"] = new { doubleValue = Convert.ToDouble(textBox_price.Text) },
                     ["image_url"] = new { stringValue = textBox_image_url.Text },
-                    ["amount"] = new { integerValue = Convert.ToInt32(textBox_count.Text)
+                    ["amount"] = new
+                    {
+                        integerValue = Convert.ToInt32(textBox_count.Text)
                     }
                 }
             };
@@ -154,6 +156,11 @@ namespace PR_shop
         {
             DeleteProduct();
         }
+
+        private void panel_edit_items_Load(object sender, EventArgs e)
+        {
+
+        }
     }
-    
+
 }

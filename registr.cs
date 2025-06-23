@@ -91,13 +91,6 @@ namespace PR_shop
 
 
 
-
-
-
-
-
-
-
         private void label_registr_login_Click(object sender, EventArgs e)
         {
            go_to_login();

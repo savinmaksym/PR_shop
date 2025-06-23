@@ -104,10 +104,7 @@ namespace PR_shop
             regForm.Show(); 
         }
 
-       
-
-       
-
+      
         private void label_login_registr_MouseClick(object sender, MouseEventArgs e)
         {
             go_to_registr();

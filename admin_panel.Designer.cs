@@ -65,6 +65,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "admin_panel";
             Text = "Меню адміністратора";
+            Load += admin_panel_Load;
             ResumeLayout(false);
         }
 
